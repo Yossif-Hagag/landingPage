@@ -18,7 +18,7 @@
  * 
 */
 const navList = document.getElementById('navbar__list');
-const sections = document.getElementsByTagName('section');
+const sections = document.querySelectorAll('section');
 const links = document.getElementsByTagName('a');
 /**
  * End Global Variables
@@ -56,7 +56,6 @@ let addClassActive = function(input){
     	links[input].style.backgroundColor = 'orange';
     }
 }
-
 // Scroll to anchor ID using scrollTO event
 
 
@@ -69,25 +68,35 @@ let addClassActive = function(input){
 // Build menu 
 
 // Scroll to section on link click
-links[0].addEventListener('click', function () {
-	links[0].href = "#section " + 1;
+links[0].addEventListener('click', function (event) {
+	event.preventDefault();
 	addClassActive(0);
 });
 
-links[1].addEventListener('click', function () {
-	links[1].href = "#section " + 2;
+links[1].addEventListener('click', function (event) {
+	event.preventDefault();
 	addClassActive(1);
 });
 
-links[2].addEventListener('click', function () {
-	links[2].href = "#section " + 3;
+links[2].addEventListener('click', function (event) {
+	event.preventDefault();
 	addClassActive(2);
 });
 
-links[3].addEventListener('click', function () {
-	links[3].href = "#section " + 4;
+links[3].addEventListener('click', function (event) {
+	event.preventDefault();
 	addClassActive(3);
 });
 // Set sections as active
-
-
+window.addEventListener('scroll', function () {
+	 sections.forEach((section, index) => {
+        let rect = section.getBoundingClientRect();
+        console.log(rect);
+        let isInViewport = section.scrollTop >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth;
+        console.log(isInViewport);
+        if (isInViewport) {
+            addClassActive(index);
+        } 
+        
+    });
+});
