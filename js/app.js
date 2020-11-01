@@ -99,7 +99,6 @@ window.addEventListener('scroll', function () {
 	isScrolling = setTimeout(function() {
 		enableScroll = true;
 	}, 66);
-
 	let oldScroll = window.scrollY;
 	if (oldScroll == 0) {
 		for (let i = 0; i < links.length; i++) {
