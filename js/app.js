@@ -20,6 +20,8 @@
 const navList = document.getElementById('navbar__list');
 const sections = document.querySelectorAll('section');
 const links = document.getElementsByTagName('a');
+let enableScroll = true;
+let isScrolling;
 /**
  * End Global Variables
  * Start Helper Functions
@@ -51,8 +53,8 @@ let addClassActive = function(input){
         links[i].style.backgroundColor = '';
     };
     if (input != undefined) {
-    	sections[input].classList.add('your-active-class');
     	sections[input].scrollIntoView({behavior : 'smooth'});
+    	sections[input].classList.add('your-active-class');
     	links[input].style.backgroundColor = 'orange';
     }
 }
@@ -70,33 +72,45 @@ let addClassActive = function(input){
 // Scroll to section on link click
 links[0].addEventListener('click', function (event) {
 	event.preventDefault();
+	enableScroll = false;
 	addClassActive(0);
 });
 
 links[1].addEventListener('click', function (event) {
 	event.preventDefault();
+	enableScroll = false;
 	addClassActive(1);
 });
 
 links[2].addEventListener('click', function (event) {
 	event.preventDefault();
+	enableScroll = false;
 	addClassActive(2);
 });
 
 links[3].addEventListener('click', function (event) {
 	event.preventDefault();
+	enableScroll = false;
 	addClassActive(3);
 });
 // Set sections as active
 window.addEventListener('scroll', function () {
-	 sections.forEach((section, index) => {
+	window.clearTimeout( isScrolling );
+	isScrolling = setTimeout(function() {
+		enableScroll = true;
+	}, 66);
+
+	let oldScroll = window.scrollY;
+	if (oldScroll == 0) {
+		for (let i = 0; i < links.length; i++) {
+	        links[i].style.backgroundColor = '';
+    	};
+	}
+	sections.forEach((section, index) => {
         let rect = section.getBoundingClientRect();
-        console.log(rect);
-        let isInViewport = section.scrollTop >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth;
-        console.log(isInViewport);
-        if (isInViewport) {
+        let isInViewport = rect.top >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth;
+        if (isInViewport && enableScroll) {
             addClassActive(index);
         } 
-        
     });
 });
