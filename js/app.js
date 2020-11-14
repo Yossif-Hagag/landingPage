@@ -94,22 +94,25 @@ links[3].addEventListener('click', function (event) {
 	addClassActive(3);
 });
 // Set sections as active
-window.addEventListener('scroll', function () {
+document.addEventListener('scroll', function () {
 	window.clearTimeout( isScrolling );
 	isScrolling = setTimeout(function() {
 		enableScroll = true;
 	}, 66);
+
 	let oldScroll = window.scrollY;
 	if (oldScroll == 0) {
 		for (let i = 0; i < links.length; i++) {
 	        links[i].style.backgroundColor = '';
+	        sections[i].classList.remove('your-active-class');
     	};
 	}
 	sections.forEach((section, index) => {
         let rect = section.getBoundingClientRect();
-        let isInViewport = rect.top >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth;
+        let isInViewport = window.scrollY >= section.offsetTop &&  window.scrollY <= (section.clientHeight + section.offsetTop);
         if (isInViewport && enableScroll) {
-            addClassActive(index);
+    		enableScroll = false;
+    		addClassActive(index);
         } 
     });
 });
